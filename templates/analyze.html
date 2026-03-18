@@ -18,14 +18,35 @@ Upload & Predict
 
 </form>
 
-{% if result %}
+<!-- 🔴 ERROR MESSAGE (Duplicate Image) -->
+{% if error %}
+<div style="
+    background: linear-gradient(to right, #ff4d4d, #ff9999);
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+">
+     {{ error }}
+</div>
+
+<script>
+    alert("Duplicate Image! This animal already exists.");
+</script>
+{% endif %}
+
+
+<!-- ✅ RESULT DISPLAY (ONLY IF NO ERROR) -->
+{% if result and not error %}
 
 <div class="mt-4 text-center">
 
 <h4>Animal: {{ result.animal }}</h4>
 
 {% if image_path %}
-<img src="{{ image_path }}" width="300" class="mt-3">
+<img src="{{ image_path }}" width="300" class="mt-3 rounded shadow">
 {% endif %}
 
 <h5 class="mt-3">
@@ -37,8 +58,9 @@ Total ATC Score: {{ result.atc["Total Score"] }}
 {% for key,value in result.atc.items() %}
 {% if key != "Total Score" %}
 
-<li class="list-group-item">
-{{ key }} : {{ value }}
+<li class="list-group-item d-flex justify-content-between">
+<span>{{ key }}</span>
+<span><b>{{ value }}</b></span>
 </li>
 
 {% endif %}

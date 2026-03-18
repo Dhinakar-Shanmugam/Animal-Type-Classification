@@ -6,6 +6,9 @@ from atc_real import extract_body_measurements, calculate_atc_score
 from database import save_result
 from datetime import datetime
 
+# 🔥 NEW IMPORT
+from utils.hash_utils import get_image_hash
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load class names
@@ -30,6 +33,9 @@ transform = transforms.Compose([
 
 def predict_image(img_path):
 
+    # 🔐 Generate hash
+    image_hash = get_image_hash(img_path)
+
     img = Image.open(img_path).convert("RGB")
     img = transform(img).unsqueeze(0).to(device)
 
@@ -46,9 +52,8 @@ def predict_image(img_path):
         "animal": animal_type,
         "image_path": img_path,
         "atc": atc,
-        "date_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "date_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "imageHash": image_hash   # 🔥 IMPORTANT
     }
 
-    save_result(result)
-
-    return result
+    return result   # ❗ removed save_result from here
