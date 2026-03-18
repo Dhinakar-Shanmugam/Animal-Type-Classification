@@ -1,0 +1,44 @@
+body{
+background: linear-gradient(135deg,#4facfe,#00f2fe);
+min-height:100vh;
+font-family: Arial;
+}
+
+.hero{
+padding:100px 20px;
+text-align:center;
+color:white;
+}
+
+.feature-box{
+background:white;
+border-radius:10px;
+padding:25px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+transition:0.3s;
+height:100%;
+}
+
+.feature-box:hover{
+transform:translateY(-5px);
+}
+
+.feature-box i{
+font-size:40px;
+}
+
+.footer{
+background:#111;
+color:white;
+text-align:center;
+padding:15px;
+margin-top: 50px;
+}
+
+.card{
+border-radius:12px;
+}
+
+.features{
+margin-bottom:60px;
+}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<div class="hero">
+
+<h1>AI Based Animal Type Classification</h1>
+
+<p>
+Upload animal image and calculate ATC score using Artificial Intelligence
+</p>
+
+<br>
+
+<a href="/analyze" class="btn btn-success btn-lg">
+Check ATC Score
+</a>
+
+<a href="/records" class="btn btn-warning btn-lg">
+View Records
+</a>
+
+</div>
+
+
+<!-- FEATURES SECTION -->
+<div class="container mt-5 mb-5">
+
+<h2 class="text-center mb-4">Project Features</h2>
+
+<div class="row text-center">
+
+<div class="col-md-4">
+<div class="feature-box">
+
+<i class="bi bi-camera fs-1 text-primary"></i>
+
+<h4 class="mt-3">Image Upload</h4>
+
+<p>
+Users can upload animal images to analyze and classify them using AI.
+</p>
+
+</div>
+</div>
+
+
+<div class="col-md-4">
+<div class="feature-box">
+
+<i class="bi bi-cpu fs-1 text-success"></i>
+
+<h4 class="mt-3">AI Classification</h4>
+
+<p>
+The system uses a deep learning model to identify animal types using deep learning.
+</p>
+
+</div>
+</div>
+
+
+<div class="col-md-4">
+<div class="feature-box">
+
+<i class="bi bi-bar-chart fs-1 text-danger"></i>
+
+<h4 class="mt-3">ATC Score Calculation</h4>
+
+<p>
+Body measurements like length, height and chest width are extracted to calculate ATC score.
+</p>
+
+</div>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -8,8 +8,11 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Transform
 transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
+    transforms.Resize((224,224)),
+    transforms.RandomHorizontalFlip(),
+    transforms.RandomRotation(10),
+    transforms.ColorJitter(brightness=0.2),
+    transforms.ToTensor()
 ])
 
 # Dataset
@@ -39,7 +42,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # Training
-epochs = 5
+epochs = 15
 
 for epoch in range(epochs):
 
@@ -65,3 +68,5 @@ for epoch in range(epochs):
 torch.save(model.state_dict(), "model/animal_model.pth")
 
 print("✅ Training Complete")
+
+

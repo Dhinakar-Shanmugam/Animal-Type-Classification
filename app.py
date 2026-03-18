@@ -2,49 +2,60 @@ from flask import Flask, render_template, request
 import os
 
 from predict import predict_image
+from database import collection
 
 app = Flask(__name__)
 
 UPLOAD_FOLDER = "static/uploads"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-# Create uploads folder if not exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
-@app.route("/", methods=["GET", "POST"])
-def index():
+@app.route("/")
+def home():
+    return render_template("home.html")
+
+
+@app.route("/analyze", methods=["GET","POST"])
+def analyze():
 
     result = None
     image_path = None
 
     if request.method == "POST":
 
-        # Check file exists in request
         if "file" not in request.files:
             return "No file uploaded"
 
         file = request.files["file"]
 
-        # Check file selected
         if file.filename == "":
             return "No file selected"
 
         if file:
 
-            # Save file
-            image_path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
-            file.save(image_path)
+            path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+            file.save(path)
 
-            print("Saved image:", image_path)   # Debug line
-
-            # Predict
-            result = predict_image(image_path)
+            result = predict_image(path)
+            image_path = path
 
     return render_template(
-        "index.html",
+        "analyze.html",
         result=result,
         image_path=image_path
+    )
+
+
+@app.route("/records")
+def records():
+
+    data = list(collection.find())
+
+    return render_template(
+        "records.html",
+        records=data
     )
 
 
