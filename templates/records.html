@@ -1,47 +1,53 @@
 {% extends "base.html" %}
-
 {% block content %}
 
 <div class="container mt-5 mb-5">
 
-<h2 class="text-center">Previous ATC Records</h2>
+<h2 class="text-center">ATC Records</h2>
 
-<table class="table table-striped table-dark mt-4">
-
+<table class="table table-dark table-striped mt-4">
 <thead>
-
 <tr>
 <th>S.No</th>
+<th>Image</th>
 <th>Animal</th>
 <th>ATC Score</th>
 <th>Date</th>
-<th>Animal ID</th>
+<th>Record ID</th>
+<th>View</th>
+<th>Delete</th>
 </tr>
-
 </thead>
 
 <tbody>
-
 {% for item in records %}
-
 <tr>
-
 <td>{{ loop.index }}</td>
 
+<!-- ✅ Use image_filename for all records -->
+<td>
+<img src="{{ url_for('static', filename='uploads/' + (item.image_filename if item.image_filename else 'default.png')) }}" width="100">
+</td>
+
 <td>{{ item.animal }}</td>
-
 <td>{{ item.atc["Total Score"] }}</td>
-
 <td>{{ item.date_time }}</td>
-
 <td>{{ item._id }}</td>
 
+<td>
+<a href="/view/{{ item._id }}" class="btn btn-info btn-sm">
+    View Details
+</a>
+</td>
+
+<td>
+<a href="/delete/{{ item._id }}" class="btn btn-danger btn-sm">
+    Delete
+</a>
+</td>
 </tr>
-
 {% endfor %}
-
 </tbody>
-
 </table>
 
 </div>
