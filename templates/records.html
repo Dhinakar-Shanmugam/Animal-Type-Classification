@@ -5,49 +5,95 @@
 
 <h2 class="text-center">ATC Records</h2>
 
-<table class="table table-dark table-striped mt-4">
+<!-- 🔥 FILTER -->
+<form method="GET" class="row mb-4">
+
+<div class="col-md-4">
+<select name="animal" class="form-control">
+<option value="">All Animals</option>
+<option value="cattle">Cattle</option>
+<option value="buffalo">Buffalo</option>
+</select>
+</div>
+
+<div class="col-md-4">
+<select name="quality" class="form-control">
+<option value="">All Quality</option>
+<option value="Excellent">Excellent</option>
+<option value="Good">Good</option>
+<option value="Medium">Medium</option>
+<option value="Poor">Poor</option>
+<option value="Very Poor">Very Poor</option>
+</select>
+</div>
+
+<div class="col-md-4">
+<button class="btn btn-primary w-100">Sort / Filter</button>
+</div>
+
+</form>
+
+<table class="table table-dark table-striped">
+
 <thead>
 <tr>
 <th>S.No</th>
 <th>Image</th>
 <th>Animal</th>
 <th>ATC Score</th>
+<th>Quality</th>
 <th>Date</th>
-<th>Record ID</th>
+<th>ID</th>
 <th>View</th>
 <th>Delete</th>
 </tr>
 </thead>
 
 <tbody>
+
 {% for item in records %}
 <tr>
+
 <td>{{ loop.index }}</td>
 
-<!-- ✅ Use image_filename for all records -->
 <td>
-<img src="{{ url_for('static', filename='uploads/' + (item.image_filename if item.image_filename else 'default.png')) }}" width="100">
+<img src="{{ url_for('static', filename='uploads/' + item.image_filename) }}" width="100">
 </td>
 
 <td>{{ item.animal }}</td>
+
 <td>{{ item.atc["Total Score"] }}</td>
+
+<td>
+{% if item.atc_tag == "Excellent" %}
+<span class="badge bg-success">🟢 Excellent</span>
+{% elif item.atc_tag == "Good" %}
+<span class="badge bg-warning">🟡 Good</span>
+{% elif item.atc_tag == "Medium" %}
+<span class="badge bg-info">🟠 Medium</span>
+{% elif item.atc_tag == "Poor" %}
+<span class="badge bg-danger">🔴 Poor</span>
+{% else %}
+<span class="badge bg-dark">⚫ Very Poor</span>
+{% endif %}
+</td>
+
 <td>{{ item.date_time }}</td>
 <td>{{ item._id }}</td>
 
 <td>
-<a href="/view/{{ item._id }}" class="btn btn-info btn-sm">
-    View Details
-</a>
+<a href="/view/{{ item._id }}" class="btn btn-info btn-sm">View</a>
 </td>
 
 <td>
-<a href="/delete/{{ item._id }}" class="btn btn-danger btn-sm">
-    Delete
-</a>
+<a href="/delete/{{ item._id }}" class="btn btn-danger btn-sm">Delete</a>
 </td>
+
 </tr>
 {% endfor %}
+
 </tbody>
+
 </table>
 
 </div>
