@@ -4,84 +4,158 @@
 
 <div class="container mt-5 mb-5">
 
-    <h2 class="text-center mb-4"> Analysis Result</h2>
+    <h2 class="text-center mb-5 fw-bold">📊 Analysis Result</h2>
 
-    <div class="row justify-content-center">
+    <div class="row g-4">
 
-        <!-- Image Card -->
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-lg">
-                <div class="card-body text-center">
-                    <img src="{{ url_for('static', filename='uploads/' + (image_filename if image_filename else 'default.png')) }}"
-                         class="img-fluid rounded shadow" style="max-height: 400px; object-fit: cover;">
-                    <h5 class="mt-3 text-success">Record ID: {{ record_id }}</h5>
-                    <h4 class="mt-2">Animal: {{ result.animal }}</h4>
+        <!-- LEFT: IMAGE + DETAILS -->
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0 text-center p-3">
+
+                <img src="{{ url_for('static', filename='uploads/' + (image_filename if image_filename else 'default.png')) }}"
+                     class="img-fluid rounded mb-3"
+                     style="max-height: 350px; object-fit: cover;">
+
+                <h5 class="text-muted">Record ID</h5>
+                <p class="fw-bold text-success">{{ record_id }}</p>
+
+                <h4 class="mt-2 fw-bold">
+                    Animal: {{ result.animal | capitalize }}
+                </h4>
+
+                <!-- QUALITY BADGE -->
+                <div class="mt-3">
+                    <span class="badge px-3 py-2 fs-6
+                        {% if result.atc_tag == 'Excellent' %}bg-success
+                        {% elif result.atc_tag == 'Good' %}bg-warning
+                        {% elif result.atc_tag == 'Medium' %}bg-info
+                        {% elif result.atc_tag == 'Poor' %}bg-danger
+                        {% else %}bg-dark
+                        {% endif %}">
+                        {{ result.atc_tag }}
+                    </span>
                 </div>
+
             </div>
         </div>
 
-        <!-- ATC Measurements Card -->
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-lg">
-                <div class="card-body">
+        <!-- RIGHT: ATC DETAILS -->
+        <div class="col-md-7">
 
-                    <h4 class="text-center mb-3">📊 ATC Measurements</h4>
+            <!-- TOTAL SCORE -->
+            <div class="card shadow-lg border-0 mb-4 text-center p-4"
+     style="
+     background: rgba(0, 0, 0, 0.8);
+     color: #00f2fe;
+     border: 2px solid #00f2fe;
+     backdrop-filter: blur(10px);
+     ">
 
-                    <table class="table table-bordered table-striped">
+                <h5>Total ATC Score</h5>
+                <h1 class="fw-bold display-4">
+                    {{ result.atc["Total Score"] }}
+                </h1>
+
+            </div>
+
+            <!-- TABLE -->
+            <div class="card shadow-sm border-0 mb-4 p-3">
+
+                <h5 class="text-center mb-3">📏 ATC Measurements</h5>
+
+                <table class="table table-hover text-center">
+                    <thead class="table-dark">
                         <tr>
                             <th>Parameter</th>
-                            <th>ATC Score</th>
+                            <th>Score</th>
                         </tr>
+                    </thead>
 
+                    <tbody>
                         <tr>
                             <td>Body Length</td>
                             <td>{{ result.atc["Body Length"] }}</td>
                         </tr>
-
                         <tr>
                             <td>Height</td>
                             <td>{{ result.atc["Height"] }}</td>
                         </tr>
-
                         <tr>
                             <td>Chest Width</td>
                             <td>{{ result.atc["Chest Width"] }}</td>
                         </tr>
-
                         <tr>
                             <td>Rump Angle</td>
                             <td>{{ result.atc["Rump Angle"] }}</td>
                         </tr>
-
                         <tr>
                             <td>Body Condition</td>
                             <td>{{ result.atc["Body Condition"] }}</td>
                         </tr>
-                    </table>
+                    </tbody>
+                </table>
 
-                    <!-- Highlighted Total ATC Score -->
-                    <div class="mt-2     p-4 text-center bg-primary text-white rounded shadow-lg">
-                        <h4 class="mb-2">Total ATC Score</h4>
-                        <span style="font-size: 2.5rem; font-weight: bold;">
-                            {{ result.atc["Total Score"] }}
-                        </span>
-                    </div>
-
-                    <div class="text-center mt-4">
-                        <a href="/records" class="btn btn-secondary btn-lg me-2">
-                            View Records
-                        </a>
-                        <a href="/analyze" class="btn btn-success btn-lg">
-                            Analyze Another
-                        </a>
-                    </div>
-
-                </div>
             </div>
+
+            <!-- GRAPH -->
+            <div class="card shadow-sm border-0 p-3">
+
+                <h5 class="text-center mb-3">📊 ATC Analysis Graph</h5>
+
+                <canvas id="atcChart"></canvas>
+
+            </div>
+
         </div>
 
     </div>
 
+    <!-- BUTTONS -->
+    <div class="text-center mt-5">
+        <a href="/records" class="btn btn-dark btn-lg me-3 px-4">
+            📂 View Records
+        </a>
+        <a href="/analyze" class="btn btn-success btn-lg px-4">
+            🔄 Analyze Again
+        </a>
+    </div>
+
 </div>
+
+<!-- CHART SCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctx = document.getElementById('atcChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["Body Length", "Height", "Chest Width", "Rump Angle", "Body Condition"],
+        datasets: [{
+            data: [
+                {{ result.atc["Body Length"] }},
+                {{ result.atc["Height"] }},
+                {{ result.atc["Chest Width"] }},
+                {{ result.atc["Rump Angle"] }},
+                {{ result.atc["Body Condition"] }}
+            ],
+            backgroundColor: [
+                '#4facfe','#00f2fe','#43e97b','#fa709a','#feca57'
+            ]
+        }]
+    },
+    options: {
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
 
 {% endblock %}
