@@ -3,12 +3,15 @@
 
 <div class="container mt-5 mb-5">
 
-<h2 class="text-center">ATC Records</h2>
+<h2 class="text-center mb-4 fw-bold">📂 ATC Records</h2>
 
-<!-- 🔥 FILTER -->
-<form method="GET" class="row mb-4">
+<!-- 🔥 FILTER SECTION -->
+<div class="glass-card p-4 mb-4">
+
+<form method="GET" class="row g-3">
 
 <div class="col-md-4">
+<label class="mb-1">🐄 Animal Type</label>
 <select name="animal" class="form-control">
 <option value="">All Animals</option>
 <option value="cattle">Cattle</option>
@@ -17,6 +20,7 @@
 </div>
 
 <div class="col-md-4">
+<label class="mb-1">📊 Quality</label>
 <select name="quality" class="form-control">
 <option value="">All Quality</option>
 <option value="Excellent">Excellent</option>
@@ -27,20 +31,29 @@
 </select>
 </div>
 
-<div class="col-md-4">
-<button class="btn btn-primary w-100">Sort / Filter</button>
+<div class="col-md-4 d-flex align-items-end">
+<button class="btn btn-success w-100 fw-bold">
+    🔍 Apply Filter
+</button>
 </div>
 
 </form>
 
-<table class="table table-dark table-striped">
+</div>
 
-<thead>
+<!-- 🔥 TABLE -->
+<div class="glass-card p-3">
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle text-center">
+
+<thead style="background: #14532d; color: #00ff9c;">
 <tr>
-<th>S.No</th>
+<th>#</th>
 <th>Image</th>
 <th>Animal</th>
-<th>ATC Score</th>
+<th>Score</th>
 <th>Quality</th>
 <th>Date</th>
 <th>ID</th>
@@ -52,41 +65,72 @@
 <tbody>
 
 {% for item in records %}
-<tr>
+<tr style="transition:0.3s;">
 
 <td>{{ loop.index }}</td>
 
+<!-- IMAGE -->
 <td>
-<img src="{{ url_for('static', filename='uploads/' + item.image_filename) }}" width="100">
+<img src="{{ url_for('static', filename='uploads/' + item.image_filename) }}"
+     style="width:80px; height:60px; object-fit:cover; border-radius:8px; border:2px solid #00ff9c;">
 </td>
 
-<td>{{ item.animal }}</td>
+<!-- ANIMAL -->
+<td class="fw-bold text-success">
+    {{ item.animal | capitalize }}
+</td>
 
-<td>{{ item.atc["Total Score"] }}</td>
+<!-- SCORE -->
+<td>
+<span class="badge bg-dark px-3 py-2">
+    {{ item.atc["Total Score"] }}
+</span>
+</td>
 
+<!-- QUALITY -->
 <td>
 {% if item.atc_tag == "Excellent" %}
-<span class="badge bg-success">🟢 Excellent</span>
+<span class="badge bg-success px-3 py-2">🟢 Excellent</span>
+
 {% elif item.atc_tag == "Good" %}
-<span class="badge bg-warning">🟡 Good</span>
+<span class="badge bg-warning px-3 py-2 text-dark">🟡 Good</span>
+
 {% elif item.atc_tag == "Medium" %}
-<span class="badge bg-info">🟠 Medium</span>
+<span class="badge bg-info px-3 py-2">🟠 Medium</span>
+
 {% elif item.atc_tag == "Poor" %}
-<span class="badge bg-danger">🔴 Poor</span>
+<span class="badge bg-danger px-3 py-2">🔴 Poor</span>
+
 {% else %}
-<span class="badge bg-dark">⚫ Very Poor</span>
+<span class="badge bg-secondary px-3 py-2">⚫ Very Poor</span>
 {% endif %}
 </td>
 
-<td>{{ item.date_time }}</td>
-<td>{{ item._id }}</td>
-
-<td>
-<a href="/view/{{ item._id }}" class="btn btn-info btn-sm">View</a>
+<!-- DATE -->
+<td style="font-size: 0.9rem;">
+    {{ item.date_time }}
 </td>
 
+<!-- ID -->
+<td style="font-size: 0.8rem; color: #aaa;">
+    {{ item._id }}
+</td>
+
+<!-- VIEW -->
 <td>
-<a href="/delete/{{ item._id }}" class="btn btn-danger btn-sm">Delete</a>
+<a href="/view/{{ item._id }}" 
+   class="btn btn-sm btn-outline-success">
+   👁️ View
+</a>
+</td>
+
+<!-- DELETE -->
+<td>
+<a href="/delete/{{ item._id }}" 
+   class="btn btn-sm btn-outline-danger"
+   onclick="return confirm('Delete this record?')">
+   🗑️
+</a>
 </td>
 
 </tr>
@@ -95,6 +139,10 @@
 </tbody>
 
 </table>
+
+</div>
+
+</div>
 
 </div>
 

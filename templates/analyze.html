@@ -2,94 +2,99 @@
 
 {% block content %}
 
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
 
-    <div class="card p-4 shadow">
+<div class="row justify-content-center">
 
-        <h2 class="text-center">ATC Score Checker</h2>
+    <!-- CENTER CARD -->
+    <div class="col-md-6">
 
-        <form id="analyzeForm" action="/analyze" method="POST" enctype="multipart/form-data">
+        <div class="glass-card shadow-lg p-4 text-center">
 
-            <input type="file" name="file" class="form-control mt-3" required>
+            <h2 class="mb-4 fw-bold">📷 Upload Animal Image</h2>
 
-            <button type="submit" class="btn btn-success mt-3">
-                Upload & Predict
-            </button>
+            <form id="analyzeForm" action="/analyze" method="POST" enctype="multipart/form-data">
 
-        </form>
+                <!-- IMAGE PREVIEW BOX -->
+                <div class="mb-3 d-flex flex-column align-items-center justify-content-center"
+                     style="
+                     height: 260px;
+                     border: 2px dashed #00c853;
+                     border-radius: 12px;
+                     position: relative;
+                     overflow: hidden;
+                     ">
 
-        <!-- Loading Spinner -->
-        <div id="loadingSpinner" class="text-center mt-4" style="display: none;">
-            <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
-                <span class="visually-hidden">Loading...</span>
+                    <!-- PREVIEW IMAGE -->
+                    <img id="previewImage"
+                         src="{{ url_for('static', filename='images/upload.png') }}"
+                         style="
+                         max-height: 100%;
+                         max-width: 100%;
+                         object-fit: contain;
+                         display: block;
+                         ">
+
+                    <!-- DEFAULT TEXT -->
+                    <p id="uploadText"
+                       style="
+                       position: absolute;
+                       bottom: 10px;
+                       color: #ccc;
+                       font-size: 14px;
+                       ">
+                        📂 Click below to upload image
+                    </p>
+
+                </div>
+
+                <!-- FILE INPUT -->
+                <input type="file" name="file" class="form-control mt-3" required
+                       onchange="previewFile(event)">
+
+                <!-- BUTTON -->
+                <button type="submit" class="btn btn-success mt-4 w-100 py-2 fw-bold">
+                    🚀 Upload & Analyze
+                </button>
+
+            </form>
+
+            <!-- LOADING -->
+            <div id="loadingSpinner" class="text-center mt-4" style="display: none;">
+                <div class="spinner-border text-success" style="width: 4rem; height: 4rem;"></div>
+                <p class="mt-3 fs-5">🤖 AI is analyzing your image...</p>
             </div>
-            <p class="mt-2 fs-5">Analyzing image, please wait...</p>
-        </div>
-
-        <!-- 🔴 ERROR MESSAGE (Duplicate Image) -->
-        {% if error %}
-        <div style="
-            background: linear-gradient(to right, #ff4d4d, #ff9999);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            text-align: center;
-            font-size: 16px;
-        ">
-            {{ error }}
-        </div>
-
-        <script>
-            alert("Duplicate Image! This animal already exists.");
-        </script>
-        {% endif %}
-
-        <!-- ✅ RESULT DISPLAY (ONLY IF NO ERROR) -->
-        {% if result and not error %}
-
-        <div class="mt-4 text-center">
-
-            <h4>Animal: {{ result.animal }}</h4>
-
-            {% if image_path %}
-            <img src="{{ image_path }}" width="300" class="mt-3 rounded shadow">
-            {% endif %}
-
-            <h5 class="mt-3">
-                Total ATC Score: {{ result.atc["Total Score"] }}
-            </h5>
-
-            <ul class="list-group mt-3">
-
-                {% for key,value in result.atc.items() %}
-                {% if key != "Total Score" %}
-
-                <li class="list-group-item d-flex justify-content-between">
-                    <span>{{ key }}</span>
-                    <span><b>{{ value }}</b></span>
-                </li>
-
-                {% endif %}
-                {% endfor %}
-
-            </ul>
 
         </div>
-
-        {% endif %}
 
     </div>
 
 </div>
 
-<script>
-    const form = document.getElementById("analyzeForm");
-    const spinner = document.getElementById("loadingSpinner");
+</div>
 
-    form.addEventListener("submit", function() {
-        spinner.style.display = "block";
-    });
+<!-- SCRIPTS -->
+<script>
+
+// IMAGE PREVIEW FIX
+function previewFile(event) {
+    const image = document.getElementById("previewImage");
+    const text = document.getElementById("uploadText");
+
+    image.src = URL.createObjectURL(event.target.files[0]);
+
+    // Hide text after selecting image
+    text.style.display = "none";
+}
+
+// LOADING
+const form = document.getElementById("analyzeForm");
+const spinner = document.getElementById("loadingSpinner");
+
+form.addEventListener("submit", function() {
+    spinner.style.display = "block";
+});
+
 </script>
 
 {% endblock %}

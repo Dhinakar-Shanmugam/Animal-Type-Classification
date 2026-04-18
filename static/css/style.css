@@ -1,44 +1,126 @@
-body{
-background: linear-gradient(135deg,#4facfe,#00f2fe);
-min-height:100vh;
-font-family: Arial;
+/* 🌿 GLOBAL BACKGROUND */
+body {
+    background: linear-gradient(135deg, #0b2e13, #14532d, #166534);
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    color: #e5e7eb;
 }
 
-.hero{
-padding:100px 20px;
-text-align:center;
-color:white;
+/* 🌿 NAVBAR */
+.navbar {
+    background: rgba(0, 0, 0, 0.8) !important;
+    backdrop-filter: blur(10px);
 }
 
-.feature-box{
-background:white;
-border-radius:10px;
-padding:25px;
-box-shadow:0 5px 15px rgba(0,0,0,0.2);
-transition:0.3s;
-height:100%;
+/* 🌿 HERO */
+.hero {
+    padding: 100px 20px;
+    text-align: center;
+    color: #d1fae5;
+    animation: fadeIn 1.2s ease-in-out;
 }
 
-.feature-box:hover{
-transform:translateY(-5px);
+/* 🌿 GLASS CARD */
+.card {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 15px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #e5e7eb;
+    transition: 0.3s;
 }
 
-.feature-box i{
-font-size:40px;
+.card:hover {
+    transform: translateY(-5px);
 }
 
-.footer{
-background:#111;
-color:white;
-text-align:center;
-padding:15px;
-margin-top: 50px;
+/* 🌿 FEATURE BOX */
+.feature-box {
+    background: rgba(255,255,255,0.08);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+    transition: 0.3s;
 }
 
-.card{
-border-radius:12px;
+.feature-box:hover {
+    transform: scale(1.05);
 }
 
-.features{
-margin-bottom:60px;
+/* 🌿 BUTTONS */
+.btn-success {
+    background: linear-gradient(45deg, #22c55e, #15803d);
+    border: none;
+}
+
+.btn-success:hover {
+    transform: scale(1.05);
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #84cc16, #4d7c0f);
+    border: none;
+}
+
+/* 🌿 CUSTOM BUTTON */
+.btn-custom {
+    background: linear-gradient(45deg, #16a34a, #22c55e);
+    border: none;
+    color: white;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-custom:hover {
+    transform: scale(1.05);
+}
+
+/* 🌿 INPUTS */
+.form-control {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+}
+
+.form-control::placeholder {
+    color: #cbd5e1;
+}
+
+/* 🌿 TABLE */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* 🌿 TOTAL SCORE CARD */
+.score-card {
+    background: linear-gradient(135deg, #14532d, #22c55e);
+    color: white;
+    border-radius: 15px;
+    animation: fadeInUp 1s ease;
+}
+
+/* 🌿 LOGIN IMAGE */
+.auth-image {
+    height: 100vh;
+    border-radius: 15px;
+    background-size: cover;
+    background-position: center;
+}
+
+/* 🌿 ANIMATIONS */
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeInUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
